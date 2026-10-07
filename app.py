@@ -133,11 +133,15 @@ QUESTIONS = [
 @st.cache_resource
 def get_sheet():
     info = dict(st.secrets["gcp_service_account"])
-    creds = Credentials.from_service_account_info(
-        info,
-        scopes=["https://www.googleapis.com/auth/spreadsheets",
-                "https://www.googleapis.com/auth/drive"]
-    )
+info["private_key"] = info["private_key"].replace("\\n", "\n")
+
+creds = Credentials.from_service_account_info(
+    info,
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive",
+    ],
+)
     client = gspread.authorize(creds)
     sh = client.open_by_key(st.secrets["sheet_id"])
     try:
