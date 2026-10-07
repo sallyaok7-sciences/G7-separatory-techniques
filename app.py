@@ -149,7 +149,8 @@ creds = Credentials.from_service_account_info(
     except gspread.WorksheetNotFound:
         ws = sh.add_worksheet(title="Results", rows=1000, cols=20)
         ws.append_row(["Timestamp","Student ID","Student Name","Class","Score /10",
-                       "Percentage","Time Used (min)","Status","Attempt Hash"])
+                       "Percentage","Time Used (min)","Status","Attempt Hash"
+    ])
     return ws
 
 def normalize_id(s):
