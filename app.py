@@ -133,24 +133,37 @@ QUESTIONS = [
 @st.cache_resource
 def get_sheet():
     info = dict(st.secrets["gcp_service_account"])
-info["private_key"] = info["private_key"].replace("\\n", "\n")
+    info["private_key"] = info["private_key"].replace("\\n", "\n")
 
-creds = Credentials.from_service_account_info(
-    info,
-    scopes=[
+    scopes = [
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive",
-    ],
-)
+    ]
+
+    creds = Credentials.from_service_account_info(
+        info,
+        scopes=scopes,
+    )
+
     client = gspread.authorize(creds)
     sh = client.open_by_key(st.secrets["sheet_id"])
+
     try:
         ws = sh.worksheet("Results")
     except gspread.WorksheetNotFound:
-        ws = sh.add_worksheet(title="Results", rows=1000, cols=20)
-        ws.append_row(["Timestamp","Student ID","Student Name","Class","Score /10",
-                       "Percentage","Time Used (min)","Status","Attempt Hash"
-    ])
+        ws = sh.add_worksheet(title="Results", rows=200, cols=10)
+        ws.append_row([
+            "Timestamp",
+            "Student ID",
+            "Student Name",
+            "Class",
+            "Score /10",
+            "Percentage",
+            "Time Used (min)",
+            "Status",
+            "Attempt Hash",
+        ])
+
     return ws
 
 def normalize_id(s):
