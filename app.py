@@ -189,7 +189,8 @@ st.caption("Grade 7 • Separation techniques • 30 minutes • One attempt •
 try:
     ws = get_sheet()
 except Exception as e:
-    st.error("Teacher setup is not complete yet. Add the Google Sheets secrets described in README.md.")
+    st.error("Google Sheets connection failed.")
+    st.exception(e)
     st.stop()
 
 # ---------- SIDEBAR / TEACHER ----------
